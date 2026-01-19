@@ -1,0 +1,26 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+
+public class SceneSwitcher : MonoBehaviour
+{
+    public void LoadToScene(string sceneName)
+    {
+        SceneManager.LoadScene(sceneName);
+    }
+
+    public void ExitGame()
+    {
+        // Log message to the console for debugging purposes
+        Debug.Log("Exiting game...");
+
+        // Exit the application
+        Application.Quit();
+
+        // Note: This will not work in the Unity Editor. Use UnityEditor.EditorApplication.isPlaying to simulate quitting in the editor
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#endif
+    }
+}
