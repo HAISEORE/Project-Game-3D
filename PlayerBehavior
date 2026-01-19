@@ -1,0 +1,55 @@
+using UnityEngine;
+using UnityEngine.SceneManagement;
+
+public class PlayerLookAtSlenderman : MonoBehaviour
+{
+    public float lookTimeThreshold = 2.0f; // waktu yang diperlukan untuk game over
+    private float lookTimer = 0.0f; // timer untuk melacak waktu melihat
+
+    void Update()
+    {
+        CheckLookAtSlenderman();
+    }
+
+    void CheckLookAtSlenderman()
+    {
+        // Dapatkan kamera utama
+        Camera mainCamera = Camera.main;
+        
+        // Buat ray dari posisi kamera ke arah depan kamera
+        Ray ray = new Ray(mainCamera.transform.position, mainCamera.transform.forward);
+        RaycastHit hit;
+
+        // Periksa apakah raycast mengenai objek dengan tag "Slenderman"
+        if (Physics.Raycast(ray, out hit))
+        {
+            if (hit.transform.CompareTag("Slender"))
+            {
+                // Tambahkan waktu ke lookTimer jika melihat ke arah Slenderman
+                lookTimer += Time.deltaTime;
+
+                // Jika melihat lebih dari threshold, game over
+                if (lookTimer >= lookTimeThreshold)
+                {
+                    GameOver();
+                }
+            }
+            else
+            {
+                // Reset timer jika tidak melihat ke arah Slenderman
+                lookTimer = 0.0f;
+            }
+        }
+        else
+        {
+            // Reset timer jika tidak ada objek yang terkena raycast
+            lookTimer = 0.0f;
+        }
+    }
+
+    void GameOver()
+    {
+        // Pindah ke scene GameOver
+        SceneManager.LoadScene("GameOver");
+    }
+}
